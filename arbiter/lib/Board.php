@@ -110,7 +110,6 @@ class Board {
 
   function isLegalMove(Move $move): bool {
     switch ($move->type) {
-      case Move::T_PASS: return !$this->anyMoves();
       case Move::T_CLONE: return $this->canClone($move->dest);
       case Move::T_JUMP: return $this->canJump($move->src, $move->dest);
     }
@@ -150,22 +149,12 @@ class Board {
     $r2 = intdiv($m->dest, Config::BOARD_SIZE);
     $c2 = $m->dest % Config::BOARD_SIZE;
 
-    switch ($m->type) {
-      case Move::T_PASS:
-        break;
-
-      case Move::T_CLONE:
-        $this->mat[$r2][$c2] = (int)$this->side;
-        $this->infectNeighbors($r2, $c2);
-        break;
-
-      case Move::T_JUMP:
-        $this->mat[$r1][$c1] = self::EMPTY;
-        $this->mat[$r2][$c2] = (int)$this->side;
-        $this->infectNeighbors($r2, $c2);
-        break;
+    if ($m->type == Move::T_JUMP) {
+      $this->mat[$r1][$c1] = self::EMPTY;
     }
 
+    $this->mat[$r2][$c2] = (int)$this->side;
+    $this->infectNeighbors($r2, $c2);
     $this->side = !$this->side;
   }
 

@@ -49,15 +49,12 @@ class Game {
   }
 
   private function getMove(array $tokens): Move {
-    $type = $this->shiftAndCheck($tokens, 0, Move::T_NUM_TYPES - 1);
+    $type = $this->shiftAndCheck($tokens, Move::T_CLONE, Move::T_JUMP);
     $src = 0;
     $dest = 0;
     $numSquares = Config::BOARD_SIZE * Config::BOARD_SIZE;
 
     switch ($type) {
-      case Move::T_PASS:
-        break;
-
       case Move::T_CLONE:
         $dest = $this->shiftAndCheck($tokens, 0, $numSquares - 1);
         break;
