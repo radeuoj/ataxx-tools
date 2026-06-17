@@ -5,6 +5,7 @@ class Tournament {
   private int $numRounds;
   private string $saveDir;
   private bool $saveInputs;
+  private Fixtures $fixtures;
 
   function __construct(array $players, int $numRounds, string $saveDir,
                        bool $saveInputs) {
@@ -12,25 +13,17 @@ class Tournament {
     $this->numRounds = $numRounds;
     $this->saveDir = $saveDir;
     $this->saveInputs = $saveInputs;
-
-    shuffle($this->players);
+    $this->fixtures = new Fixtures(count($players));
   }
 
   function run(): void {
-    $roster = range(0, count($this->players) - 1);
     $round = 0;
     $half = count($this->players) / 2;
     for ($round = 0; $round < $this->numRounds; $round++) {
       $this->roundBanner($round);
-      for ($i = 0; $i < $half; $i++) {
-        $id1 = $roster[$i];
-        $id2 = $roster[$i + $half];
-        if ($round % 2) {
-          list($id1, $id2) = [ $id2, $id1 ];
-        }
+      foreach ($this->fixtures->getMatches() as [$id1, $id2]) {
         $this->runGame($round, $id1, $id2);
       }
-      $this->rotateRoster($roster);
     }
   }
 
@@ -84,13 +77,5 @@ class Tournament {
     });
 
     return $ord;
-  }
-
-  private function rotateRoster(array& $roster): void {
-    $half = count($roster) / 2;
-    $elem = array_splice($roster, $half, 1);
-    array_splice($roster, 1, 0, $elem);
-    $elem = array_splice($roster, $half, 1);
-    array_splice($roster, count($roster), 0, $elem);
   }
 }
