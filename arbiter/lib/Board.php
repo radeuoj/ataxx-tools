@@ -39,7 +39,7 @@ class Board {
         } else {
           $s .= AnsiColors::PIECES[$this->mat[$r][$c]];
           $s .= ' ⬤ ';
-          $s .= AnsiColors::DEBUG;
+          $s .= AnsiColors::DEFAULT;
         }
         $s .= '│';
       }
@@ -50,7 +50,7 @@ class Board {
     }
     $this->printBottomSeparatorLine();
     Log::debug('La mutare: %s⬤%s',
-               [AnsiColors::PIECES[$this->side], AnsiColors::DEBUG]);
+               [AnsiColors::PIECES[$this->side], AnsiColors::DEFAULT]);
   }
 
   private function printTopSeparatorLine(): void {

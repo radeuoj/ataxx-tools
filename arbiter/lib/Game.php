@@ -132,7 +132,7 @@ class Game {
     for ($i = 0; $i < 2; $i++) {
       Log::debug('%s⬤%s %s    %2d piese %0.3f s', [
         AnsiColors::PIECES[$i],
-        AnsiColors::DEBUG,
+        AnsiColors::DEFAULT,
         mb_str_pad($p[$i]->name, $padLen),
         $this->board->countSquares($i),
         $p[$i]->remainingTime / 1000,

@@ -47,7 +47,15 @@ class Log {
     if (Config::LOG_LEVEL >= $level) {
       $spaces = str_repeat(' ', 4 * $indent);
       $str = vsprintf($msg, $args);
+      $str = self::interceptDefaultColor($str, $color);
       fprintf(STDERR, "%s%s%s%s\n", $spaces, $color, $str, AnsiColors::DEFAULT);
     }
+  }
+
+  // Înlocuiește AnsiColors::DEFAULT cu culoarea mesajului. Aceasta ne permite
+  // să tipărim mesaje colorate într-un mesaj care are propria sa culoare,
+  // apoi să revenim la această culoare, nu la DEFAULT.
+  private static function interceptDefaultColor(string $s, string $color): string {
+    return str_replace(AnsiColors::DEFAULT, $color, $s);
   }
 }
