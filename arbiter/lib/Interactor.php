@@ -40,7 +40,7 @@ class Interactor {
     $contents = @file_get_contents($this->outputFile);
 
     if ($contents === false) {
-      Log::warn('Fișierul %s nu există.', [ $this->outputFile]);
+      Log::warning('Fișierul %s nu există.', [ $this->outputFile]);
       return;
     }
 

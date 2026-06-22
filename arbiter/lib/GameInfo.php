@@ -28,11 +28,19 @@ class GameInfo {
     $this->inputs[] = $input;
   }
 
-  // Victorie prin descalificare cu 25-0.
-  function disqualify(bool $side, string $msg): void {
+  // Victorie la masa verde cu 25-0.
+  function forfeit(bool $side, string $msg): void {
     $this->error = $msg;
     $this->scores[!$side] = 1.0;
-    $this->pieces[!$side] = 25;
+    $this->pieces[!$side] = (Config::BOARD_SIZE ** 2 + 1) / 2;
+  }
+
+  function draw(): void {
+    $pcs = (Config::BOARD_SIZE ** 2 - 1) / 2;
+    $this->setPieces([$pcs, $pcs]);
+    $this->error = sprintf("Am declarat partida remiză după %s salturi.",
+                           Config::MAX_JUMPS);
+    Log::warning($this->error);
   }
 
   function setPieces(array $pieces): void {

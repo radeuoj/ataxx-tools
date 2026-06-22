@@ -11,10 +11,10 @@ class Config {
 
   const KIBITZ_PREFIX = 'kibitz ';
 
-  const TIME_LIMIT_PER_GAME = 180_000; // milisecunde
+  const TIME_LIMIT_PER_GAME = 60_000; // milisecunde
 
-  // Limită hard pentru cazul în care agenții intră în buclă.
-  const MAX_MOVES = 500;
+  // Numărul de salturi consecutive la care partida este declarată remiză.
+  const MAX_JUMPS = 100;
 
   // Numele fișierelor salvate în directorul indicat de --save. Vom înlocui cu
   // sprintf() numărul rundei și al mutării și numele jucătorilor.

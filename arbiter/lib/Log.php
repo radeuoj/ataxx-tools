@@ -18,7 +18,7 @@ class Log {
     self::write(self::ERROR, AnsiColors::ERROR, $msg, $args, $indent);
   }
 
-  static function warn(string $msg, array $args = [], $indent = 0): void {
+  static function warning(string $msg, array $args = [], $indent = 0): void {
     self::write(self::WARNING, AnsiColors::WARNING, $msg, $args, $indent);
   }
 

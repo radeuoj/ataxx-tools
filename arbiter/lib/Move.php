@@ -28,6 +28,10 @@ class Move {
     }
   }
 
+  function isJump(): bool {
+    return ($this->type == self::T_JUMP);
+  }
+
   function toString(): string {
     return $this->text;
   }

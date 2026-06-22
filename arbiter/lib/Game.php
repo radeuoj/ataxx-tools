@@ -4,6 +4,7 @@ class Game {
   private array $players;
   private Board $board;
   private bool $badMove;
+  private int $numJumps;
 
   private GameInfo $gameInfo;
 
@@ -13,17 +14,25 @@ class Game {
     $this->board = new Board();
     $this->badMove = false;
     $this->gameInfo = new GameInfo();
+    $this->numJumps = 0;
   }
 
   function run(): void {
     $this->players[0]->startGame();
     $this->players[1]->startGame();
 
-    while (!$this->badMove && $this->board->anyMoves()) {
+    while (!$this->isOver()) {
       $this->playMove();
     }
 
     $this->computeScores();
+  }
+
+  private function isOver(): bool {
+    return
+      $this->badMove ||
+      !$this->board->anyMoves() ||
+      ($this->numJumps == Config::MAX_JUMPS);
   }
 
   private function playMove(): void {
@@ -41,8 +50,7 @@ class Game {
       $this->gameInfo->addTurn($ti);
     } catch (AtaxxException $e) {
       $msg = sprintf('Eroare: %s', $e->getMessage());
-      $this->gameInfo->disqualify($this->board->side, $msg);
-      Log::warn($msg);
+      Log::warning($msg);
       $this->badMove = true;
     }
   }
@@ -61,6 +69,12 @@ class Game {
       throw new AtaxxException("Mutarea {$text} este ilegală.");
     }
 
+    if ($m->isJump()) {
+      $this->numJumps++;
+    } else {
+      $this->numJumps = 0;
+    }
+
     return $m;
   }
 
@@ -70,7 +84,12 @@ class Game {
 
   private function computeScores(): void {
     $b = $this->board;
-    if (!$this->badMove) {
+
+    if ($this->badMove) {
+      $this->gameInfo->forfeit($this->board->side, $msg);
+    } else if ($this->numJumps == Config::MAX_JUMPS) {
+      $this->gameInfo->draw();
+    } else {
       $pieces = [$b->countSquares(0), $b->countSquares(1)];
 
       if (!$b->anyMoves()) {
