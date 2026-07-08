@@ -4,7 +4,7 @@ Puteți folosi arbitrul și ca să rulați o singură partidă, configurînd un 
 
 ## Pas specific pentru Windows: instalează WSL
 
-Arbitrul este scris în PHP. Există mai multe moduri de a rula PHP în Windows. Instrucțiunile următoare documentează prima metodă.
+Recomandarea mea întotdeauna este să rulați Linux nativ, din motive prea ample ca să încapă într-un singur paragraf. Dacă totuși doriți să folosiți Windows, arbitrul este scris în PHP. Există mai multe moduri de a rula PHP în Windows. Instrucțiunile următoare documentează prima metodă (WSL).
 
 1. Prin [WSL]([url](https://learn.microsoft.com/en-us/windows/wsl/)) (Windows Subsystem for Linux).
 2. Printr-o mașină virtuală.
