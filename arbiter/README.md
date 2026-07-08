@@ -71,7 +71,7 @@ Dacă merge, veți vedea un mesaj cu instrucțiuni de apelare.
 
 ## Compilați agentul Doofus
 
-**Notă**: Puteți folosi și agentul Simpleton, care constă dintr-un singur fișier C++ și include și un binar deja compilat. Dar vă recomand să exersați compilarea lui Doofus ca să vă obișnuiți cu organizarea codului.
+**Notă**: Puteți folosi și agentul Greedy, care constă dintr-un singur fișier C++ și include și un binar deja compilat. Dar vă recomand să exersați compilarea lui Doofus ca să vă obișnuiți cu organizarea codului.
 
 Pentru aceasta, veți avea nevoie de compilatorul de C++ (`g++`) și de utilitarele `cmake` și `make`. Vom descoperi împreună ce pachete trebuie instalate. Pentru Ubuntu, cred că sînt acestea:
 
@@ -110,6 +110,12 @@ php arbiter/tournament.php --binary agent/doofus/build/doofus --name doofus1 --b
 
 Acum în `~/Desktop/games` veți găsi fișierul `round-001-doofus1-doofus2`.
 
+## Opțiuni de configurare pentru arbitru
+
+Arbitrul mai admite opțiunile `--rounds <număr>` pentru a organiza mai mult de o partidă și `--save-inputs` pentru a salva toate fișierele de intrare pentru fiecare partidă. Aceasta vă poate ajuta să depanați un bug care survine pe parcursul partidei.
+
+În plus, puteți modifica valorile constantelor din `Config.php`. Fiecare constantă este documentată. De exemplu, puteți reduce nivelul de zgomot modificînd valoarea lui `LOG_LEVEL` la `Log::INFO` ca să nu mai tipărească mesajele de debug.
+
 ## Script Bash
 
 Dacă vă ajută, puteți colecta toate opțiunile într-un script Bash. Repoul include scriptul `arbiter/tournament.sh`, pe care îl puteți modifica.
@@ -130,12 +136,6 @@ php arbiter/tournament.php \
     --save-inputs
 ```
 
-## Opțiuni de configurare pentru arbitru
-
-Arbitrul mai admite opțiunile `--rounds <număr>` pentru a organiza mai mult de o partidă și `--save-inputs` pentru a salva toate fișierele de intrare pentru fiecare partidă. Aceasta vă poate ajuta să depanați un bug care survine pe parcursul partidei.
-
-În plus, puteți modifica valorile constantelor din `Config.php`. Fiecare constantă este documentată. De exemplu, puteți reduce nivelul de zgomot modificînd valoarea lui `LOG_LEVEL` la `Log::INFO` ca să nu mai tipărească mesajele de debug.
-
 ## Adversar uman
 
-Dacă doriți să jucați voi înșivă o partidă contra agentului, puteți pasa `--binary human --name orice_nume`. Cînd vă vine rîndul, arbitrul va aștepta o mutare de la tastatură, în formatul cunoscut.
+Dacă doriți să jucați voi înșivă o partidă contra agentului, puteți pasa `--binary human --name orice_nume`. Cînd vă vine rîndul, arbitrul va aștepta o mutare de la tastatură, în formatul cunoscut. Nu uitați și posibilitatea să încărcați codul-sursă în [viewer](https://nerdvana.ro/ataxx-viewer/viewer/).
