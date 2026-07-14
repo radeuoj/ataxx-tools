@@ -68,13 +68,16 @@ class Tournament {
         continue;
       }
 
+      $roundTimes = [];
       foreach ($data['results'] as $entry) {
-        [$id1, $id2, $s0, $s1, $p0, $p1] = $entry;
+        [$id1, $id2, $s0, $s1, $p0, $p1, $t0, $t1] = $entry;
         $this->players[$id1]->addResult($s0, $p0);
         $this->players[$id2]->addResult($s1, $p1);
+        $roundTimes[$id1] = $t0;
+        $roundTimes[$id2] = $t1;
       }
 
-      $this->report();
+      $this->report($roundTimes);
     }
   }
 
@@ -97,6 +100,7 @@ class Tournament {
           $id1, $id2,
           $gi->getScore(0), $gi->getScore(1),
           $gi->getPieces(0), $gi->getPieces(1),
+          $p1->remainingTime, $p2->remainingTime,
         ];
       }
       file_put_contents($resultFile, serialize(['results' => $results]));
@@ -112,18 +116,21 @@ class Tournament {
     Log::successBanner($msg);
   }
 
-  private function report(): void {
+  private function report(array $roundTimes = []): void {
     $ord = $this->sortPlayers();
     $len = Str::maxLength(array_column($this->players, 'name'));
 
     Log::success('');
-    Log::success('%s  Partide    Puncte    Piese', [mb_str_pad('Nume', $len)]);
-    Log::success(mb_str_pad('', $len + 28, '-'));
+    Log::success('%s  Partide    Puncte    Piese    Timp rămas',
+                 [mb_str_pad('Nume', $len)]);
+    Log::success(mb_str_pad('', $len + 38, '-'));
     foreach ($ord as $x) {
       $p = $this->players[$x];
       $name = mb_str_pad($p->name, $len + 2);
-      Log::success("%s  %3d       %4.1f     %4d",
-                   [$name, $p->numGames, $p->score, $p->pieces]);
+      $remaining = $roundTimes[$x] ?? 0;
+      $seconds = $remaining / 1000;
+      Log::success("%s  %3d       %4.1f     %4d    %6.1fs",
+                   [$name, $p->numGames, $p->score, $p->pieces, $seconds]);
     }
     Log::success('');
   }
