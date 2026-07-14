@@ -9,6 +9,7 @@ class Args {
     'save:',
     'save-inputs',
     'time:',
+    'jobs:',
   ];
 
   private array $binaries;
@@ -17,6 +18,7 @@ class Args {
   private string $saveDir;
   private bool $saveInputs;
   private int $time;
+  private int $jobs;
 
   function parse(): void {
     $opts = getopt('', self::OPTIONS);
@@ -31,6 +33,7 @@ class Args {
     $this->saveDir = $opts['save'] ?? '';
     $this->saveInputs = isset($opts['save-inputs']);
     $this->time = $opts['time'] ?? 60;
+    $this->jobs = $opts['jobs'] ?? 0;
     $this->validate();
   }
 
@@ -44,6 +47,7 @@ class Args {
     print "    --save <cale>      Directorul unde vom salva partidele.\n";
     print "    --save-inputs      Salvează și toate datele de intrare.\n";
     print "    --time <număr>     Timpul permis în secunde (implicit: 60).\n";
+    print "    --jobs <număr>     Numărul de meciuri rulate în paralel (implicit: toate).\n";
     print "\n";
     print "Opțiunile --binary și --name pot fi repetate pentru fiecare agent.\n";
   }
@@ -115,5 +119,9 @@ class Args {
 
   function getTimeMillis(): int {
     return $this->time * 1_000;
+  }
+
+  function getJobs(): int {
+    return $this->jobs;
   }
 }

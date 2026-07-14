@@ -14,7 +14,8 @@ function main(): void {
       $args->getPlayers(),
       $args->getNumRounds(),
       $args->getSaveDir(),
-      $args->getSaveInputs()
+      $args->getSaveInputs(),
+      $args->getJobs()
     );
     $t->run();
   } catch (AtaxxException $e) {

@@ -100,6 +100,9 @@ class Interactor {
     $resultCode = $this->runCmd($cmd);
     if ($resultCode !== 0) {
       $msg = "Agentul s-a terminat cu codul {$resultCode}.";
+
+    $this->parseAgentOutput();
+    $this->parseAgentError();
       throw new AtaxxException($msg);
     }
 
