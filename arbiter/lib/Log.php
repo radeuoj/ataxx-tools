@@ -49,7 +49,7 @@ class Log {
   private static function write(
     int $level, string $color, string $msg, array $args = [], int $indent = 0): void {
 
-    if (Config::LOG_LEVEL >= $level) {
+    if (Config::$LOG_LEVEL >= $level) {
       $spaces = str_repeat(' ', 4 * $indent);
       $str = vsprintf($msg, $args);
       $str = self::interceptDefaultColor($str, $color);

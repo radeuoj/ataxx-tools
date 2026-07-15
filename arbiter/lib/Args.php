@@ -10,6 +10,17 @@ class Args {
     'save-inputs',
     'time:',
     'jobs:',
+    'log-level:',
+  ];
+
+  const LOG_LEVEL_NAMES = [
+    'fatal'   => Log::FATAL,
+    'error'   => Log::ERROR,
+    'warning' => Log::WARNING,
+    'success' => Log::SUCCESS,
+    'notice'  => Log::NOTICE,
+    'info'    => Log::INFO,
+    'debug'   => Log::DEBUG,
   ];
 
   private array $binaries;
@@ -19,6 +30,7 @@ class Args {
   private bool $saveInputs;
   private int $time;
   private int $jobs;
+  private int $logLevel;
 
   function parse(): void {
     $opts = getopt('', self::OPTIONS);
@@ -34,7 +46,9 @@ class Args {
     $this->saveInputs = isset($opts['save-inputs']);
     $this->time = $opts['time'] ?? 60;
     $this->jobs = $opts['jobs'] ?? 0;
+    $this->logLevel = $this->parseLogLevel($opts['log-level'] ?? 'debug');
     $this->validate();
+    Config::$LOG_LEVEL = $this->logLevel;
   }
 
   private function usage(): void {
@@ -48,6 +62,7 @@ class Args {
     print "    --save-inputs      Salvează și toate datele de intrare.\n";
     print "    --time <număr>     Timpul permis în secunde (implicit: 60).\n";
     print "    --jobs <număr>     Numărul de meciuri rulate în paralel (implicit: toate).\n";
+    print "    --log-level <nivel> Nivelul de logare: fatal, error, warning, success, notice, info, debug (implicit: debug).\n";
     print "\n";
     print "Opțiunile --binary și --name pot fi repetate pentru fiecare agent.\n";
   }
@@ -123,5 +138,18 @@ class Args {
 
   function getJobs(): int {
     return $this->jobs;
+  }
+
+  function getLogLevel(): int {
+    return $this->logLevel;
+  }
+
+  private function parseLogLevel(string $value): int {
+    $level = self::LOG_LEVEL_NAMES[$value] ?? null;
+    if ($level === null) {
+      $valid = implode(', ', array_keys(self::LOG_LEVEL_NAMES));
+      throw new AtaxxException("Nivelul de logare '$value' nu este valid. Opțiuni: $valid.");
+    }
+    return $level;
   }
 }
